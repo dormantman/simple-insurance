@@ -1,4 +1,4 @@
-from database import postgres_db
+from databases import postgres_db
 
 __all__ = ['BaseMongoCRUD', ]
 

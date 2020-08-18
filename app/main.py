@@ -4,11 +4,11 @@ from starlette.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
-from api import router as api_router
-from config import ALLOWED_HOSTS, API_PREFIX, DEBUG, PROJECT_NAME, VERSION, WEB_PREFIX
+from services.api import router as api_router
+from core.config import ALLOWED_HOSTS, API_PREFIX, DEBUG, PROJECT_NAME, VERSION, WEB_PREFIX
 from errors import http422_error_handler, http_error_handler
-from events import create_start_app_handler, create_stop_app_handler
-from web import router as web_router
+from core.events import create_start_app_handler, create_stop_app_handler
+from services.web import router as web_router
 
 
 def get_application() -> FastAPI:

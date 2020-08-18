@@ -4,13 +4,8 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-import schemas
-from models import (
-    InsuranceRate, InsuranceRatePydantic, User,
-    UserInPydantic,
-    UserPydantic,
-    UserPydanticList,
-)
+from models import InsuranceRate, InsuranceRatePydantic, User, UserInPydantic, UserPydantic, UserPydanticList
+from schemas import insurance, users
 from utils import template_for_404
 
 router = APIRouter()
@@ -21,11 +16,9 @@ async def get_rates():
     return await InsuranceRatePydantic.from_queryset(InsuranceRate.all().order_by('-created').limit(50))
 
 
-@router.post('/rates/', response_model=schemas.RateUploadAnswer)
+@router.post('/rates/', response_model=insurance.RateUploadAnswer)
 async def upload_rates(rate_data: dict):
     uploaded = False
-
-    print(rate_data)
 
     insurance_rates = reduce(lambda first, second: first + second, [
         [dict(date=date, **element) for element in rate_data[date]]
@@ -39,21 +32,22 @@ async def upload_rates(rate_data: dict):
 
         similar_rates = await InsuranceRate.filter(**rate_data)
         if not similar_rates:
+            await InsuranceRate.create(**rate_data)
             uploaded = True
 
-    return schemas.RateUploadAnswer(
+    return insurance.RateUploadAnswer(
         message='Rate was uploaded successfully' if uploaded else 'All changes have already been uploaded',
         status=uploaded,
     )
 
 
-@router.get('/price/', response_model=schemas.InsurancePrice)
+@router.get('/price/', response_model=insurance.InsurancePrice)
 async def get_price(cost: float, cargo_type: str, date: datetime.datetime):
     queryset = InsuranceRate.filter(cargo_type=cargo_type, created__lte=date).order_by('created')
     data = await queryset.first()
     if not data:
         return
-    return schemas.InsurancePrice(price=cost * data.rate, rate=data.rate, date=data.created)
+    return insurance.InsurancePrice(price=cost * data.rate, rate=data.rate, date=data.created)
 
 
 @router.post('/')
@@ -107,9 +101,9 @@ async def update_user(user_id: int, user: UserInPydantic):
     return await UserPydantic.from_queryset_single(User.get(id=user_id))
 
 
-@router.delete("/user/{user_id}", response_model=schemas.Status, **template_for_404())
+@router.delete("/user/{user_id}", response_model=users.Status, **template_for_404())
 async def delete_user(user_id: int):
     deleted_count = await User.filter(id=user_id).delete()
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"User {user_id} not found")
-    return schemas.Status(message=f"Deleted user {user_id}")
+    return users.Status(message=f"Deleted user {user_id}")

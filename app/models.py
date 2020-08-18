@@ -48,5 +48,3 @@ UserPydanticList = pydantic_queryset_creator(User)
 
 InsuranceRatePydantic = pydantic_model_creator(InsuranceRate, name="InsuranceRate")
 InsuranceRatePydanticList = pydantic_queryset_creator(InsuranceRate)
-
-

@@ -1,10 +1,8 @@
-from typing import Callable
-
 from fastapi import FastAPI
 from loguru import logger
 from tortoise.contrib.fastapi import register_tortoise
 
-from config import DATABASE_URL
+from core.config import DATABASE_URL
 
 
 async def connect_to_db(app: FastAPI) -> None:
@@ -22,23 +20,8 @@ async def connect_to_db(app: FastAPI) -> None:
 
 
 async def close_db_connection(app: FastAPI) -> None:
-    logger.info("Closing connection to database")
+    logger.info("Closing connection to db")
 
     await app.state.pool.close()
 
     logger.info("Connection closed")
-
-
-def create_start_app_handler(app: FastAPI) -> Callable:  # type: ignore
-    async def start_app() -> None:
-        await connect_to_db(app)
-
-    return start_app
-
-
-def create_stop_app_handler(app: FastAPI) -> Callable:  # type: ignore
-    @logger.catch
-    async def stop_app() -> None:
-        await close_db_connection(app)
-
-    return stop_app
