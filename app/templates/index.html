@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+    <title>Simple Insurance - FastAPI / Tortoise ORM / PostgreSQL / Docker</title>
+    {% block styles %}
+    <link rel="stylesheet" type="text/css" href="/static/index.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+    <link href="https://prismjs.com/themes/prism.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.21.0/prism.min.js"></script>
+    <script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://prismjs.com/assets/prefixfree.min.js"></script>
+    <script src="https://addyosmani.com/prism-js/components/platform/platform.js"></script>
+    <link rel="import" href="https://addyosmani.com/prism-js/components/prism-js/prism-js.html">
+    <link href="https://raw.githubusercontent.com/PrismJS/prism-themes/master/themes/prism-vsc-dark-plus.css"
+          rel="stylesheet"/>
+    {% endblock %}
+
+</head>
+<body>
+
+{% block content %}
+<div class="container">
+    <div class="title"><b>Simple Insurance </b> - FastAPI / Tortoise ORM / PostgreSQL / Docker</div>
+    <div class="methods">
+        <div class="label">API Methods</div>
+        <div class="method">
+            <form id="rates-post" class="entry" method="post" action="/api/rates/" enctype="text/plain">
+                <div class="name">
+                    <div class="url">.../api/rates/</div>
+                    <div class="method post">POST</div>
+                    <input type="hidden"
+                           name='{"2020-06-01":[{"cargo_type":"Slass","rate":"0.04"},{"cargo_type":"Other","rate":"0.01"}],"2020-07-01":[{"cargo_type":"Glass","rate":"0.035"},{"cargo_type":"Other","rate":"0.015"}],"":"'
+                           value='"}'/>
+                </div>
+                <div class="text">
+                    This method is necessary to fill in the database
+                    with various information for calculating the cost of insurance
+                </div>
+                <div class="button" onclick="document.getElementById('rates-post').submit();">Try it out</div>
+            </form>
+            <div class="data">
+                <pre>
+                    <div style="text-align: center; font-size: 16px">Example of data to send:</div>
+                    <code class="language-javascript">
+    {
+        "2020-06-01": [
+            {
+                "cargo_type": "Slass",
+                "rate": "0.04"
+            },
+            {
+                "cargo_type": "Other",
+                "rate": "0.01"
+            }
+        ],
+        "2020-07-01": [
+            {
+                "cargo_type": "Glass",
+                "rate": "0.035"
+            },
+            {
+                "cargo_type": "Other",
+                "rate": "0.015"
+            }
+        ]
+    }</code>
+                </pre>
+            </div>
+        </div>
+        <div class="method">
+            <form id="rates-get" class="entry" method="get" action="/api/rates/">
+                <div class="name">
+                    <div class="url">.../api/rates/</div>
+                    <div class="method get">GET</div>
+                </div>
+                <div class="text">
+                    This method allows us to get acquainted with
+                    the entire list of the latest current rates
+                </div>
+                <div class="button" onclick="document.getElementById('rates-get').submit();">Try it out</div>
+            </form>
+            <div class="data">
+                <pre>
+                    <div style="text-align: center; font-size: 16px">An example of server response:</div>
+                    <code class="language-javascript">
+    [
+        {
+            "id": 3, "cargo_type": "Glass",
+            "rate": 0.035, "created":
+                "2020-07-01T00:00:00"
+        },
+        {
+            "id": 4, "cargo_type": "Other",
+            "rate": 0.015, "created":
+                "2020-07-01T00:00:00"
+        },
+        {
+            "id": 1, "cargo_type": "Slass",
+            "rate": 0.04, "created":
+                "2020-06-01T00:00:00"
+        },
+        {
+            "id": 2, "cargo_type": "Other",
+            "rate": 0.01, "created":
+                "2020-06-01T00:00:00"
+        }
+    ]</code>
+                </pre>
+            </div>
+        </div>
+        <div class="method">
+            <form id="price-get" class="entry" method="get" action="/api/price/">
+                <div class="name">
+                    <div class="url">.../api/price/</div>
+                    <div class="method get">GET</div>
+                </div>
+                <div class="text">
+                    This method allows us to calculate the cost
+                    of insurance for a request using the current rate
+                </div>
+                <div class="inputs">
+                    <label>
+                        <input class="input" type="number" name="cost" placeholder="Cost"/>
+                    </label>
+                    <label>
+<!--                        <input type="text" name="cargo_type" placeholder="Cargo type"/>-->
+                        <select class="input" name="cargo_type">
+                            <option>Glass</option>
+                            <option>Other</option>
+                            <option>Slass</option>
+                        </select>
+                    </label>
+                    <label>
+                        <input class="input" id="price-date" type="date" placeholder="Date"/>
+                    </label>
+                    <input id="price-date-hidden" type="hidden" name="date"/>
+                </div>
+                <div class="button" onclick="toPrice()">Try it out</div>
+            </form>
+            <div class="data">
+                <pre>
+                    <div style="text-align: center; font-size: 16px">An example of server response:</div>
+                    <code class="language-javascript">
+    {
+        "price": 500.0,
+        "rate": 0.01,
+        "date": "2020-06-01T00:00:00"
+    }</code>
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    function toPrice() {
+        const priceGet = document.getElementById('price-get');
+        const priceDate = document.getElementById('price-date');
+        document.getElementById('price-date-hidden').value = new Date(priceDate.value).toISOString();
+        priceGet.submit();
+    }
+</script>
+<script src="https://prismjs.com/assets/utopia.js"></script>
+<script src="https://prismjs.com/components.js"></script>
+<script src="https://prismjs.com/prism.js" data-manual></script>
+
+</body>

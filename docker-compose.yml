@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: simple-insurance-app
+    command: uvicorn main:app --host 0.0.0.0 --port 8080 --loop 'uvloop' --lifespan on --reload
+    volumes:
+      - ./app:/app
+    depends_on:
+      - db
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env
+
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+
+volumes:
+  postgres_data:

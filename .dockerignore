@@ -1,0 +1,22 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+.idea/
+bookletapi/__pycache__/
+api/obj/__pycache__/
+NetworkDiary/__pycache__/
+NetworkDiary/obj/__pycache__/
+vk_bot/Bot/__pycache__/
+vk_bot/Bot/objects/__pycache__/
+vk_bot/__pycache__/
+cache/
+NetworkDiary/DnevnikRu/__pycache__/
+NetworkDiary/EduTatar/__pycache__/
+NetworkDiary/MosReg/__pycache__/
+NetworkDiary/MosRu/__pycache__/
+NetworkDiary/NetSchool/__pycache__/
+NetworkDiary/NetSchool/obj/__pycache__/
+__pycache__/
+api/__pycache__/
+config/nginx/
+diary/__pycache__/
+web/__pycache__/

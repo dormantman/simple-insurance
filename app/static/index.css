@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    font-family: Hack, monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10vh;
+}
+
+.container > .title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-align: center;
+}
+
+.container > .title > b {
+    padding-right: 8px;
+}
+
+.container > .methods {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    /*height: 100%;*/
+}
+
+.container > .methods > .label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    margin-bottom: 100px;
+    font-size: 22px;
+}
+
+.container > .methods > .method {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1368px;
+    width: 100%;
+}
+
+.container > .methods > .method > .entry {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+}
+
+.container > .methods > .method > .entry > .name {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > .methods > .method > .entry > .name > .url {
+    color: #262626;
+    font-size: 18px;
+}
+
+.container > .methods > .method > .entry > .text {
+    max-width: 240px;
+    margin: 36px 16px 16px;
+}
+
+.container > .methods > .method > .entry > .inputs {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > .methods > .method > .entry > .inputs > label {
+    margin: 8px;
+}
+
+.container > .methods > .method > .entry > .inputs > label > .input {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    width: 200px;
+    background: #ffffff;
+}
+
+.container > .methods > .method > .entry > .name > .method {
+    margin-left: 30px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.container > .methods > .method > .entry > .name > .post {
+    color: #ffffff;
+    background: #FF0000;
+}
+
+.container > .methods > .method > .entry > .name > .get {
+    color: #ffffff;
+    background: #399a1b;
+}
+
+.container > .methods > .method > .entry > .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*border: 1px solid #dbdbdb;*/
+    border: none;
+    -webkit-transition: all .17s ease-in-out;
+    transition: all .17s ease-in-out;
+    font-size: 17px;
+    line-height: 20px;
+    height: 36px;
+    width: fit-content;
+    outline: none;
+    -webkit-filter: none;
+    filter: none;
+    padding: 6px 22px;
+    color: #50a2f5;
+    font-weight: 600;
+    background-color: rgba(36, 139, 242, 0.1);
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 36px 8px 8px;
+}
+
+.container > .methods > .method > .entry > .button:hover,
+.container > .methods > .method > .entry > .button:focus {
+    transition: color 0.01s, background-color 0.01s;
+    box-shadow: 0 6px 27px rgba(36, 139, 242, 0.32);
+    color: white;
+    background-color: #47a3ff;
+}
+
+.container > .methods > .method > .data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0 40px 80px;
+}
+
+@media (max-width: 920px) {
+    .container > .methods > .method > .data {
+        margin: 40px 0 40px 0;
+    }
+}
+
+.container > .methods > .method > .data > pre {
+    width: 360px;
+    border-radius: 12px;
+    min-height: 280px;
+}
