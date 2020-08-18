@@ -6,7 +6,7 @@ depending on the type of cargo and the declared value
 
 Simple-insurance requires [Docker](https://www.docker.com/get-started) to run.
 
-Upload the repository to a local machine.
+Download the repository to a local machine.
 
 ```sh
 $ git clone https://github.com/dormantman/simple-insurance
