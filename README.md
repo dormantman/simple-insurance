@@ -4,15 +4,25 @@ depending on the type of cargo and the declared value
 
 ### Installation
 
-Simple-insurance requires [Docker](https://www.docker.com/get-started) to run.
+Simple-insurance requires [Docker](https://www.docker.com/get-started) to run
 
-Download the repository to a local machine.
+Download the repository to a local machine
 
 ```sh
 $ git clone https://github.com/dormantman/simple-insurance
 ```
 
-Install the dependencies and start the server.
+Create an environment file using the template: [.env.example][envExample]
+
+```sh
+$ cp .env.example .env
+```
+
+Then fill in the necessary parameters, such as: 
+SECRET_KEY, DB_CONNECTION, POSTGRES_HOST 
+and all other settings and database connection settings
+
+After that, install the dependencies and start the server
 
 ```sh
 $ docker-compose build
@@ -31,3 +41,4 @@ MIT
 
 
 [config]: <https://github.com/dormantman/simple-insurance/blob/master/app/config.py>
+[envExample]: <https://github.com/dormantman/simple-insurance/blob/master/.env.example>
